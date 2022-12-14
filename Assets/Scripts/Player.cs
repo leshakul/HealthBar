@@ -20,19 +20,23 @@ public class Player : MonoBehaviour
 
     public void ApplyDamage(int damage)
     {
-        if(_currentHealth > _minHealth)
+        _currentHealth -= damage;
+        HealthChanged?.Invoke(_currentHealth, _maxHealth);
+
+        if (_currentHealth < _minHealth)
         {
-            _currentHealth -= damage;
-            HealthChanged?.Invoke(_currentHealth, _maxHealth);
+            _currentHealth = Mathf.Clamp(_currentHealth, _minHealth, _maxHealth);
         }
     }
 
     public void ApplyHealth(int health)
     {
-        if (_currentHealth < _maxHealth)
+        _currentHealth += health;
+        HealthChanged?.Invoke(_currentHealth, _maxHealth);
+
+        if (_currentHealth > _maxHealth)
         {
-            _currentHealth += health;
-            HealthChanged?.Invoke(_currentHealth, _maxHealth);
+            _currentHealth = Mathf.Clamp(_currentHealth, _minHealth, _maxHealth);
         }
     }
 }
